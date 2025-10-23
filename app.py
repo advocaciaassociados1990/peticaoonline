@@ -125,14 +125,14 @@ def montar_texto(dados):
 # === INTERFACE WEB (STREAMLIT) ===
 st.set_page_config(page_title="🧩 Gerador de Petições", layout="centered")
 st.title("🧩 Gerador de Petições")
-st.caption("Versão web desenvolvida por Ana Paula Braga para Giovanna Rocha Simões — uso restrito.")
+st.caption("Versão web — uso restrito.")
 st.markdown("---")
 
 comarca = st.text_input("Comarca:")
-requerente = st.text_input("Requerente:")
+requerente = st.text_input("REQUERENTE, qualificação completa:")
 plano = st.selectbox("Plano de Saúde:", ["unimed", "bradesco", "notredame", "samaritano", "amil", "sulamerica"])
-prioridade = st.selectbox("Prioridade de Tramitação:", ["NENHUMA", "IDOSO", "DEFICIENTE"])
-gratuidade = st.selectbox("Gratuidade de Justiça:", ["NENHUMA", "IDOSO_OU_TUTELADO", "MENOR"])
+prioridade = st.selectbox("Prioridade de Tramitação:", ["NENHUMA", "idoso", "deficiente"])
+gratuidade = st.selectbox("Gratuidade de Justiça:", ["NENHUMA", "idoso_ou_tutelado", "menor"])
 doenca = st.text_input("Doença / Condição:")
 negativa = st.selectbox("Tipo de Negativa:", ["tacita", "outra"])
 tipo_demanda = st.selectbox(
@@ -172,3 +172,4 @@ if st.button("🧩 Gerar Petição"):
                 mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
             )
         st.success("✅ Petição gerada com sucesso! O formato é idêntico ao modelo original.")
+
