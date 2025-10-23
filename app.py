@@ -128,12 +128,12 @@ st.title("🧩 Gerador de Petições")
 st.caption("Versão web — uso restrito.")
 st.markdown("---")
 
-comarca = st.text_input("Comarca:")
+comarca = st.text_input("COMARCA/ESTADO:")
 requerente = st.text_input("REQUERENTE, qualificação completa:")
 plano = st.selectbox("Plano de Saúde:", ["unimed", "bradesco", "notredame", "samaritano", "amil", "sulamerica"])
 prioridade = st.selectbox("Prioridade de Tramitação:", ["NENHUMA", "idoso", "deficiente"])
 gratuidade = st.selectbox("Gratuidade de Justiça:", ["NENHUMA", "idoso_ou_tutelado", "menor"])
-doenca = st.text_input("Doença / Condição:")
+doenca = st.text_input("Doença / Condição com breve descrição:")
 negativa = st.selectbox("Tipo de Negativa:", ["tacita", "outra"])
 tipo_demanda = st.selectbox(
     "Tipo de Demanda:",
@@ -172,5 +172,6 @@ if st.button("🧩 Gerar Petição"):
                 mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
             )
         st.success("✅ Petição gerada com sucesso! O formato é idêntico ao modelo original.")
+
 
 
