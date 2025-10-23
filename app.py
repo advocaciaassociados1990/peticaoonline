@@ -139,7 +139,7 @@ tipo_demanda = st.selectbox(
     "Tipo de Demanda:",
     ["deficiencia_clinico", "deficiencia_domiciliar", "idoso_clinico", "idoso_domiciliar", "outros"]
 )
-urgencia = st.text_area("Urgência (descrição):")
+urgencia = st.text_area("Urgência (parágrafo completo):")
 urgencia_tipo = st.selectbox("Tipo de Urgência:", ["clinica", "domiciliar"])
 pedido = st.selectbox("Tipo de Pedido:", ["clinica", "domiciliar"])
 
@@ -172,4 +172,5 @@ if st.button("🧩 Gerar Petição"):
                 mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
             )
         st.success("✅ Petição gerada com sucesso! O formato é idêntico ao modelo original.")
+
 
