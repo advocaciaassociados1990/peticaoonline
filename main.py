@@ -112,9 +112,17 @@ def salvar_peticao(texto_final, nome_arquivo="peticao_final.docx"):
                 if resto:
                     processar_laranja(resto[0], p)
 
-    caminho_saida = os.path.join(PASTA_SAIDAS, nome_arquivo)
-    doc.save(caminho_saida)
-    return caminho_saida
+    # === Garante que a pasta de saída exista ===
+    try:
+        os.makedirs(PASTA_SAIDAS, exist_ok=True)
+        caminho_saida = os.path.join(PASTA_SAIDAS, nome_arquivo)
+        doc.save(caminho_saida)
+        return caminho_saida
+    except Exception as e:
+        # Se falhar (ex: Streamlit Cloud), salva no diretório atual
+        caminho_saida = os.path.join(os.getcwd(), nome_arquivo)
+        doc.save(caminho_saida)
+        return caminho_saida
 
 # === Montar texto ===
 def montar_texto(dados):
@@ -283,3 +291,4 @@ combo_pedido.pack(fill="x")
 ttk.Button(frame_principal, text="🧩 GERAR PETIÇÃO", command=gerar_peticao).pack(pady=12)
 
 app.mainloop()
+
