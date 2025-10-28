@@ -1,5 +1,6 @@
 import streamlit as st
 import os
+import tempfile
 from docx import Document
 from docx.shared import Pt, Cm
 from docx.enum.text import WD_ALIGN_PARAGRAPH
@@ -177,5 +178,6 @@ if st.button("🧩 Gerar Petição"):
                 mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
             )
         st.success("✅ Petição gerada com sucesso! O formato é idêntico ao modelo original.")
+
 
 
