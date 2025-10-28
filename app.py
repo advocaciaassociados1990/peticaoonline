@@ -1,11 +1,9 @@
 import streamlit as st
 import os
-import tempfile
 from docx import Document
 from docx.shared import Pt, Cm
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx.oxml.ns import qn
-from docx.enum.text import WD_COLOR_INDEX  # <-- adicionado para compatibilidade de cor
 
 # === Estrutura de pastas ===
 PASTA_BLOCOS = "blocos"
@@ -30,7 +28,7 @@ def processar_laranja(texto, paragrafo):
             laranja, *resto = parte.split("[/LARANJA]")
             run = paragrafo.add_run(laranja)
             try:
-                run.font.highlight_color = WD_COLOR_INDEX.YELLOW  # corrigido: compatível com docx
+                run.font.highlight_color = 6  # cor laranja
             except Exception:
                 pass
             if resto:
@@ -63,7 +61,6 @@ def salvar_peticao(texto_final, nome_arquivo="peticao_final.docx"):
         recuo_completo = "[RECUO_COMPLETO]" in bloco
         sem_recuo = "[SEM_RECUO]" in bloco
         centralizado = "[CENTRALIZADO]" in bloco
-
         bloco = (
             bloco.replace("[RECUO_COMPLETO]", "")
             .replace("[SEM_RECUO]", "")
@@ -95,10 +92,7 @@ def salvar_peticao(texto_final, nome_arquivo="peticao_final.docx"):
                 if resto:
                     processar_laranja(resto[0], p)
 
-    # Cria diretório temporário seguro para salvar o arquivo
-    pasta_saida = tempfile.gettempdir()
-    caminho_saida = os.path.join(pasta_saida, nome_arquivo)
-
+    caminho_saida = os.path.join(PASTA_SAIDAS, nome_arquivo)
     doc.save(caminho_saida)
     return caminho_saida
 
@@ -178,6 +172,7 @@ if st.button("🧩 Gerar Petição"):
                 mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
             )
         st.success("✅ Petição gerada com sucesso! O formato é idêntico ao modelo original.")
+
 
 
 
