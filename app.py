@@ -36,41 +36,70 @@ def processar_laranja(texto, paragrafo):
                 paragrafo.add_run(resto[0])
 
 # === Salvar DOCX ===
-def salvar_peticao(texto_final, nome_arquivo):
-    """
-    Salva o texto final como documento .docx de forma compatível com Streamlit Cloud.
-    """
-    # Cria documento Word
+def salvar_peticao(texto_final, nome_arquivo="peticao_final.docx"):
     doc = Document()
-    doc.add_paragraph(texto_final)
+    estilo = doc.styles["Normal"]
+    estilo.font.name = "Calibri"
+    estilo.font.size = Pt(11.5)
+    try:
+        estilo._element.rPr.rFonts.set(qn("w:eastAsia"), "Calibri")
+    except Exception:
+        pass
 
-    # Usa diretório temporário seguro (compatível com Streamlit Cloud)
+    section = doc.sections[0]
+    section.top_margin = Cm(2.5)
+    section.bottom_margin = Cm(2.5)
+    section.left_margin = Cm(2.5)
+    section.right_margin = Cm(2.5)
+
+    for bloco in texto_final.split("\n\n"):
+        if not bloco.strip():
+            continue
+        if "[PARAGRAFO]" in bloco:
+            doc.add_paragraph()
+            continue
+
+        recuo_completo = "[RECUO_COMPLETO]" in bloco
+        sem_recuo = "[SEM_RECUO]" in bloco
+        centralizado = "[CENTRALIZADO]" in bloco
+
+        bloco = (
+            bloco.replace("[RECUO_COMPLETO]", "")
+            .replace("[SEM_RECUO]", "")
+            .replace("[CENTRALIZADO]", "")
+        )
+
+        p = doc.add_paragraph()
+        p.paragraph_format.line_spacing = 1.15
+        p.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
+
+        if centralizado:
+            p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        elif recuo_completo:
+            p.paragraph_format.left_indent = Cm(4)
+            p.paragraph_format.first_line_indent = Cm(0)
+        elif sem_recuo:
+            p.paragraph_format.first_line_indent = Cm(0)
+        else:
+            p.paragraph_format.first_line_indent = Cm(4)
+
+        partes = bloco.split("[NEGRITO]")
+        for i, parte in enumerate(partes):
+            if i % 2 == 0:
+                processar_laranja(parte, p)
+            else:
+                negrito, *resto = parte.split("[/NEGRITO]")
+                run = p.add_run(negrito)
+                run.bold = True
+                if resto:
+                    processar_laranja(resto[0], p)
+
+    # Cria diretório temporário seguro para salvar o arquivo
     pasta_saida = tempfile.gettempdir()
     caminho_saida = os.path.join(pasta_saida, nome_arquivo)
 
-    # Salva o arquivo no diretório temporário
     doc.save(caminho_saida)
-
-    # Retorna o caminho do arquivo salvo
     return caminho_saida
-✅ O que muda:
-Usa tempfile.gettempdir() — diretório seguro e permitido no ambiente do Streamlit.
-
-Evita erro de permissão e inexistência de pastas.
-
-Funciona tanto localmente quanto no Streamlit Cloud.
-
-E no trecho onde você faz o download do arquivo (provavelmente algo assim):
-
-python
-Copiar código
-caminho = salvar_peticao(texto_final, nome_arquivo)
-with open(caminho, "rb") as file:
-    st.download_button(
-        label="Baixar Petição",
-        data=file,
-        file_name=nome_arquivo,
-        mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
 
 # === Montar texto ===
 def montar_texto(dados):
@@ -148,4 +177,5 @@ if st.button("🧩 Gerar Petição"):
                 mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
             )
         st.success("✅ Petição gerada com sucesso! O formato é idêntico ao modelo original.")
+
 
