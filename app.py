@@ -92,9 +92,13 @@ def salvar_peticao(texto_final, nome_arquivo="peticao_final.docx"):
                 if resto:
                     processar_laranja(resto[0], p)
 
+    # 🔹 Garantir que a pasta de saída exista
     caminho_saida = os.path.join(PASTA_SAIDAS, nome_arquivo)
+    os.makedirs(os.path.dirname(caminho_saida), exist_ok=True)  # <---- linha adicionada
+
     doc.save(caminho_saida)
     return caminho_saida
+
 
 # === Montar texto ===
 def montar_texto(dados):
@@ -172,6 +176,7 @@ if st.button("🧩 Gerar Petição"):
                 mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
             )
         st.success("✅ Petição gerada com sucesso! O formato é idêntico ao modelo original.")
+
 
 
 
