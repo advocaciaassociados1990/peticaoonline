@@ -94,7 +94,8 @@ def salvar_peticao(texto_final, nome_arquivo="peticao_final.docx"):
 
     # 🔹 Garantir que a pasta de saída exista
     caminho_saida = os.path.join(PASTA_SAIDAS, nome_arquivo)
-    os.makedirs(os.path.dirname(caminho_saida), exist_ok=True)  # <---- linha adicionada
+    if os.path.dirname(caminho_saida):
+        os.makedirs(os.path.dirname(caminho_saida), exist_ok=True)
 
     doc.save(caminho_saida)
     return caminho_saida
@@ -176,8 +177,3 @@ if st.button("🧩 Gerar Petição"):
                 mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
             )
         st.success("✅ Petição gerada com sucesso! O formato é idêntico ao modelo original.")
-
-
-
-
-
