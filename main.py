@@ -18,8 +18,10 @@ PASTA_SAIDAS = os.path.join(ROOT, "saidas")
 LOGO_CAMINHO = os.path.join(PASTA_BLOCOS, "logo_quebra_cabeca.png")
 
 if not getattr(sys, 'frozen', False):
-    os.makedirs(PASTA_BLOCOS, exist_ok=True)
-    os.makedirs(PASTA_SAIDAS, exist_ok=True)
+    if not os.path.exists(PASTA_BLOCOS):
+        os.makedirs(PASTA_BLOCOS)
+    if not os.path.exists(PASTA_SAIDAS):
+        os.makedirs(PASTA_SAIDAS)
 
 import tkinter as tk
 from tkinter import ttk, messagebox
@@ -60,6 +62,7 @@ def salvar_peticao(texto_final, nome_arquivo="peticao_final.docx"):
     estilo = doc.styles["Normal"]
     estilo.font.name = "Calibri"
     estilo.font.size = Pt(11.5)
+
     try:
         estilo._element.rPr.rFonts.set(qn("w:eastAsia"), "Calibri")
     except Exception:
@@ -74,6 +77,7 @@ def salvar_peticao(texto_final, nome_arquivo="peticao_final.docx"):
     for bloco in texto_final.split("\n\n"):
         if not bloco.strip():
             continue
+
         if "[PARAGRAFO]" in bloco:
             doc.add_paragraph()
             continue
@@ -81,6 +85,7 @@ def salvar_peticao(texto_final, nome_arquivo="peticao_final.docx"):
         recuo_completo = "[RECUO_COMPLETO]" in bloco
         sem_recuo = "[SEM_RECUO]" in bloco
         centralizado = "[CENTRALIZADO]" in bloco
+
         bloco = (
             bloco.replace("[RECUO_COMPLETO]", "")
             .replace("[SEM_RECUO]", "")
@@ -114,12 +119,14 @@ def salvar_peticao(texto_final, nome_arquivo="peticao_final.docx"):
 
     # === Garante que a pasta de saída exista ===
     try:
-        os.makedirs(PASTA_SAIDAS, exist_ok=True)
+        if not os.path.exists(PASTA_SAIDAS):
+            os.makedirs(PASTA_SAIDAS)
+
         caminho_saida = os.path.join(PASTA_SAIDAS, nome_arquivo)
         doc.save(caminho_saida)
         return caminho_saida
-    except Exception as e:
-        # Se falhar (ex: Streamlit Cloud), salva no diretório atual
+
+    except Exception:
         caminho_saida = os.path.join(os.getcwd(), nome_arquivo)
         doc.save(caminho_saida)
         return caminho_saida
@@ -145,9 +152,11 @@ def montar_texto(dados):
     bloco9 = bloco9.replace("[DESCREVER DOENÇA]", dados["doenca"])
     texto += bloco9 + "\n\n"
 
-    texto += ler_bloco(f"bloco10_urgencia_{dados['urgencia_tipo']}.txt").replace("[DESCRIÇÃO URGÊNCIA]", dados["urgencia"]) + "\n\n"
-    texto += ler_bloco(f"bloco11_pedidos_{dados['pedido']}.txt")
+    texto += ler_bloco(
+        f"bloco10_urgencia_{dados['urgencia_tipo']}.txt"
+    ).replace("[DESCRIÇÃO URGÊNCIA]", dados["urgencia"]) + "\n\n"
 
+    texto += ler_bloco(f"bloco11_pedidos_{dados['pedido']}.txt")
     return texto
 
 # === Gerar petição ===
@@ -166,15 +175,23 @@ def gerar_peticao():
         "gratuidade": combo_gratuidade.get().strip().upper() or "NENHUMA",
     }
 
-    campos_obrigatorios = ["comarca", "requerente", "plano", "doenca", "negativa", "tipo_demanda", "pedido"]
+    campos_obrigatorios = [
+        "comarca", "requerente", "plano",
+        "doenca", "negativa", "tipo_demanda", "pedido"
+    ]
+
     for c in campos_obrigatorios:
         if not dados[c]:
-            messagebox.showwarning("ATENÇÃO", "PREENCHA TODOS OS CAMPOS OBRIGATÓRIOS ANTES DE GERAR A PETIÇÃO.")
+            messagebox.showwarning(
+                "ATENÇÃO",
+                "PREENCHA TODOS OS CAMPOS OBRIGATÓRIOS ANTES DE GERAR A PETIÇÃO."
+            )
             return
 
     texto = montar_texto(dados)
     nome_arquivo = f"Peticao_{dados['requerente'].split()[0]}_{dados['comarca'].replace(' ', '_')}.docx"
     caminho_saida = salvar_peticao(texto, nome_arquivo)
+
     messagebox.showinfo("PETIÇÃO GERADA!", f"ARQUIVO SALVO EM:\n{caminho_saida}")
 
 # === INTERFACE ===
@@ -186,7 +203,14 @@ cabecalho_text = (
     "Desenvolvido por Ana Paula Braga para Giovanna Rocha Simões — Compartilhamento proibido.\n"
     "Modelo básico, a ser refinado de acordo com o caso específico."
 )
-tk.Label(app, text=cabecalho_text, font=("Calibri", 10), justify="center", wraplength=620).pack(pady=(8, 6))
+
+tk.Label(
+    app,
+    text=cabecalho_text,
+    font=("Calibri", 10),
+    justify="center",
+    wraplength=620
+).pack(pady=(8, 6))
 
 cores = ["#4C9ED9", "#F5D142", "#E94E77", "#53C28B"]
 for i in range(8):
@@ -203,14 +227,22 @@ if os.path.exists(LOGO_CAMINHO):
 
 container = ttk.Frame(app)
 container.pack(fill="both", expand=True)
+
 canvas = tk.Canvas(container)
 scrollbar = ttk.Scrollbar(container, orient="vertical", command=canvas.yview)
+
 scrollable_frame = ttk.Frame(canvas)
-scrollable_frame.bind("<Configure>", lambda e: canvas.configure(scrollregion=canvas.bbox("all")))
+scrollable_frame.bind(
+    "<Configure>",
+    lambda e: canvas.configure(scrollregion=canvas.bbox("all"))
+)
+
 canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
 canvas.configure(yscrollcommand=scrollbar.set)
+
 canvas.pack(side="left", fill="both", expand=True)
 scrollbar.pack(side="right", fill="y")
+
 frame_principal = scrollable_frame
 
 # === CAMPOS ===
@@ -251,7 +283,11 @@ entrada_doenca = ttk.Entry(frame_principal)
 entrada_doenca.pack(fill="x")
 
 ttk.Label(frame_principal, text="TIPO DE NEGATIVA:").pack(anchor="w", pady=(6, 0))
-combo_negativa = ttk.Combobox(frame_principal, values=["TACITA", "OUTRA"], state="readonly")
+combo_negativa = ttk.Combobox(
+    frame_principal,
+    values=["TACITA", "OUTRA"],
+    state="readonly"
+)
 combo_negativa.pack(fill="x")
 
 ttk.Label(frame_principal, text="TIPO DE DEMANDA:").pack(anchor="w", pady=(6, 0))
@@ -288,7 +324,10 @@ combo_pedido = ttk.Combobox(
 )
 combo_pedido.pack(fill="x")
 
-ttk.Button(frame_principal, text="🧩 GERAR PETIÇÃO", command=gerar_peticao).pack(pady=12)
+ttk.Button(
+    frame_principal,
+    text="🧩 GERAR PETIÇÃO",
+    command=gerar_peticao
+).pack(pady=12)
 
 app.mainloop()
-
