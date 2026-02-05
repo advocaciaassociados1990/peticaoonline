@@ -5,7 +5,7 @@ Por todo o exposto, requer a Vossa Excelência:
 
 [RECUO_COMPLETO]a) A concessão dos benefícios da gratuidade de justiça e tramitação prioritária;
 
-[RECUO_COMPLETO]b) A concessão liminar da tutela de urgência antecipada, inaudita altera parte, por [NEGRITO]Decisão com força de Ofício[/NEGRITO], para que seja determinada a [NEGRITO]adoção de providências, por parte da requerida, no prazo de 5 dias, no sentido de custear a realização do tratamento prescrito, sem ultrapassar o raio de 10km da residência da parte Autora[/NEGRITO], junto à rede credenciada, ou suportar o custeio direto do tratamento, em clínica/profissional particular não credenciado, tudo nos exatos termos da prescrição médica, principalmente com relação ao protocolo de tratamento, carga horária e local da prestação dos serviços, sob pena de aplicação de multa, de no mínimo R$ 1.000,00, por dia de descumprimento; 
+[RECUO_COMPLETO]b) A concessão liminar da tutela de urgência antecipada, inaudita altera parte, por [NEGRITO]Decisão com força de Ofício[/NEGRITO], para que seja determinada a [NEGRITO]adoção de providências, por parte da requerida, no prazo de 5 dias, no sentido de custear a realização do tratamento prescrito, sem ultrapassar o raio de 10km da residência da parte Autora[/NEGRITO], junto à rede credenciada, ou suportar o custeio direto do tratamento, em clínica/profissional particular não credenciado, tudo nos exatos termos da prescrição médica, principalmente com relação ao protocolo de tratamento, carga horária e local da prestação dos serviços, sem a imposição de eventual coparticipação abusiva, tudo sob pena de aplicação de multa, de no mínimo R$ 1.000,00, por dia de descumprimento; 
 
 [RECUO_COMPLETO]c) A eventual ciência do Ministério Público;
 
@@ -13,7 +13,7 @@ Por todo o exposto, requer a Vossa Excelência:
   
 [RECUO_COMPLETO]e) A aplicação das normas disciplinadas no Código de Defesa do Consumidor ao presente caso;
 
-[RECUO_COMPLETO]f) A total procedência da ação, com a confirmação da tutela de urgência cujo deferimento se espera, e a condenação definitiva da requerida na obrigação de fazer consistente em custear a realização do tratamento prescrito, ao máximo de 10km da residência da parte Autora, junto à sua rede credenciada, ou suportar o custeio direto do tratamento, em clínica particular não credenciada, tudo nos exatos termos da prescrição médica;
+[RECUO_COMPLETO]f) A total procedência da ação, com a confirmação da tutela de urgência cujo deferimento se espera, e a condenação definitiva da requerida na obrigação de fazer consistente em custear a realização do tratamento prescrito, ao máximo de 10km da residência da parte Autora, junto à sua rede credenciada, ou suportar o custeio direto do tratamento, em clínica particular não credenciada, sem a imposição de eventual coparticipação abusiva, tudo nos exatos termos da prescrição médica;
 
 [RECUO_COMPLETO]g) A condenação da empresa requerida ao pagamento das custas processuais, dos honorários advocatícios sucumbenciais, e das demais cominações de estilo. 
 
@@ -33,3 +33,4 @@ Por fim, requer que todas as publicações provenientes do presente feito sejam 
 [CENTRALIZADO]Cidade, data.
 
 [CENTRALIZADO]ADVOGADO/OAB
+
